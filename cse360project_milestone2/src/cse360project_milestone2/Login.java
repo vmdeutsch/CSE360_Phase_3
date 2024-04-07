@@ -179,6 +179,9 @@ public class Login extends Application{
         Label insuranceIDLabel = new Label("Insurance ID Number:");
         GridPane.setConstraints(insuranceIDLabel, 0, 8);
         
+        Label pharmacyLabel = new Label("Pharmacy:");
+        GridPane.setConstraints(pharmacyLabel, 0, 9);
+        
         // Text field declarations:
         TextField firstnameInput = new TextField();
         GridPane.setConstraints(firstnameInput, 1, 0);
@@ -207,9 +210,12 @@ public class Login extends Application{
         TextField insuranceIDInput = new TextField();
         GridPane.setConstraints(insuranceIDInput, 1, 8);
         
+        TextField pharmacyInput = new TextField();
+        GridPane.setConstraints(pharmacyInput, 1, 9);
+        
         // Button declarations:
         Button createaccountButton = new Button("Create Account");
-        GridPane.setConstraints(createaccountButton, 1, 9);
+        GridPane.setConstraints(createaccountButton, 1, 10);
         createaccountButton.setOnAction(e -> {
         	String firstname = firstnameInput.getText();
             String lastname = lastnameInput.getText();
@@ -220,9 +226,26 @@ public class Login extends Application{
             String dob = dobInput.getText();
             String address = addressInput.getText();
             String insuranceIDString = insuranceIDInput.getText();
+            String pharmacy = pharmacyInput.getText();
+            long phonenumber = 0;
+            
+            if (!phonenumberStr.isEmpty()) {
+                try {
+                    phonenumber = Long.parseLong(phonenumberStr); // Convert String to int
+                } catch (NumberFormatException ex) {
+                    // phonenumberInput.getText() is not convertible to int
+                    // Handle the error here, such as showing a dialog box
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Invalid Phone Number");
+                    alert.setHeaderText("Phone Number Format Error");
+                    alert.setContentText("Please enter a valid phone number.");
+                    alert.showAndWait();
+                    return; // Exit the method without proceeding further
+                }
+            }
             	
             if (firstname.isEmpty() || lastname.isEmpty() || password.isEmpty() || email.isEmpty() || dob.isEmpty() ||
-                    phonenumberStr.isEmpty() || address.isEmpty() || insuranceProvider.isEmpty() || insuranceIDString.isEmpty()) {
+                    phonenumberStr.isEmpty() || address.isEmpty() || insuranceProvider.isEmpty() || insuranceIDString.isEmpty() || pharmacy.isEmpty()) {
                     // Show dialog box for missing information
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Create Account Error");
@@ -232,12 +255,12 @@ public class Login extends Application{
                 } else {
                     // Proceed to create the account
                     int insuranceID = Integer.parseInt(insuranceIDString);
-                    int phonenumber = Integer.parseInt(phonenumberStr); // Convert String to int
+                    //int phonenumber = Integer.parseInt(phonenumberStr); // Convert String to int
                     char firstChar = firstname.charAt(0);
                     String username = Character.toUpperCase(firstChar) + lastname + phonenumber;
 
                     // Create new Account object
-                    Patient newAccount = new Patient(username, password, firstname, lastname, email, phonenumber, insuranceProvider, insuranceID, dob, address);
+                    Patient newAccount = new Patient(username, password, firstname, lastname, email, phonenumber, insuranceProvider, insuranceID, dob, address, pharmacy);
                     System.out.println(newAccount);
                     validAccounts.add(newAccount);
                     
@@ -261,7 +284,7 @@ public class Login extends Application{
                 }
         });
 
-        createAccountPane.getChildren().addAll(firstnameLabel, lastnameLabel, passwordLabel, dobLabel, emailLabel, phonenumberLabel, addressLabel, insuranceLabel, insuranceIDLabel, firstnameInput, passwordInput,  lastnameInput, dobInput, emailInput, phonenumberInput, addressInput, insuranceInput, insuranceIDInput, createaccountButton);
+        createAccountPane.getChildren().addAll(firstnameLabel, lastnameLabel, passwordLabel, dobLabel, emailLabel, phonenumberLabel, addressLabel, insuranceLabel, insuranceIDLabel, firstnameInput, passwordInput,  lastnameInput, dobInput, emailInput, phonenumberInput, addressInput, insuranceInput, insuranceIDInput, pharmacyLabel, pharmacyInput, createaccountButton);
         Scene scene = new Scene(createAccountPane, 400, 400);
         createAccountStage.setScene(scene);
         createAccountStage.show();

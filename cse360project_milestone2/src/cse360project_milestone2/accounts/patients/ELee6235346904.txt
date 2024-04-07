@@ -1,0 +1,11 @@
+Username: ELee6235346904
+Password: Pass1234
+First Name: Emma
+Last Name: Lee
+Email: elee@gmail.com
+Phone Number: 6235346904
+Insurance Provider: MediCare
+Insurance ID: 3423234
+Date of Birth: 05/12/1985
+Address: 1242 W Brick Rd
+Pharmacy: CVS

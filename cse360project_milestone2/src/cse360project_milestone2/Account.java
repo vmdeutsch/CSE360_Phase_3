@@ -11,9 +11,9 @@ public class Account {
     private String firstname;
     private String lastname;
     private String email;
-    private int phonenumber;
+    private long phonenumber;
 
-    public Account(String username, String password, String firstname, String lastname, String email, int phonenumber) {
+    public Account(String username, String password, String firstname, String lastname, String email, long phonenumber) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -42,7 +42,7 @@ public class Account {
         return email;
     }
     
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phonenumber;
     }
     
@@ -68,7 +68,7 @@ public class Account {
         this.email = email;
     }
     
-    public void setPhoneNumber(int phonenumber) {
+    public void setPhoneNumber(long phonenumber) {
         this.phonenumber = phonenumber;
     }
     public String toString() {
