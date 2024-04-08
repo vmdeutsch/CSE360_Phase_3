@@ -1,4 +1,4 @@
-package staffPortal;
+package cse360project_milestone2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -185,7 +185,7 @@ public class StaffPortal{
 
 	public void start() {
 	    // Directory containing patient files
-	    String directoryPath = "/home/ivan/school/CSE360/project/";
+	    String directoryPath = "src/cse360project_milestone2/accounts/patients/";
 	    
 	    // Get all files in the directory
 	    File directory = new File(directoryPath);
