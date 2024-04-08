@@ -1,6 +1,12 @@
 package staffPortal;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import javafx.scene.control.Alert;
@@ -16,14 +22,27 @@ public class StaffPortal{
 	//for testing
 	
 	private Vector<Patient> patients=new Vector<>();
+	private Hashtable<Patient,String> files=new Hashtable<>();
 	
 	//public void addPatient(Patient pt) {
-	public void addPatient(Patient pt) {
-
-		patients.add(pt);
+	public void addPatientFile(String file) {
+		Patient p=readPatient(file);
+		patients.add(p);
+		files.put(p, file);
+	}
+	public void addPatient(Patient p) {
+		patients.add(p);
+	}
+	public void addFileForPatient(Patient p,String file) {
+		if(!patients.contains(p))
+			return;
+		files.put(p, file);
 	}
 	public void removePatient(Patient pt) {
 		patients.remove(pt);
+		if(files.contains(pt)) {
+			files.remove(pt);
+		}
 	}
 	public boolean findPatient(Patient pt) {
 		Enumeration<Patient> pe=patients.elements();
@@ -34,7 +53,55 @@ public class StaffPortal{
 		}
 		return false;
 	}
-	
+	public Patient findPatientByUsername(String uname) 
+	{
+		Enumeration<Patient> pe=patients.elements();
+		while(pe.hasMoreElements()) {
+			Patient p=pe.nextElement();
+			if(p.getUsername().equals(uname))
+				return p;
+		}
+		return null;
+	}
+	public Patient findPatientByPhone(long phone) 
+	{
+		Enumeration<Patient> pe=patients.elements();
+		while(pe.hasMoreElements()) {
+			Patient p=pe.nextElement();
+			if(p.getPhoneNumber()==phone)
+				return p;
+		}
+		return null;
+	}
+	public Patient findPatientByInsuranceId(long id) 
+	{
+		Enumeration<Patient> pe=patients.elements();
+		while(pe.hasMoreElements()) {
+			Patient p=pe.nextElement();
+			if(p.getInsuranceID()==id)
+				return p;
+		}
+		return null;
+	}
+	public Patient findByFileName(String name) {
+		Enumeration<String> dekey=files.elements();
+		Enumeration<Patient> pe=files.keys();
+		while(dekey.hasMoreElements()) {
+			String path=dekey.nextElement();
+			Patient sres=pe.nextElement();
+			if(path.equals(name))
+				return sres;
+		}
+		return null;
+	}
+	public Enumeration<Patient> getPatients(){
+		return patients.elements();
+	}
+	public String getFileForPatient(Patient p) {
+		if(!files.contains(p))
+			return null;
+		return files.get(p);
+	}
 	private String kensaku="";
 	private boolean editable=true;
 	//set the write permissions, true for yes
@@ -74,7 +141,7 @@ public class StaffPortal{
 					Hyperlink rinku=new Hyperlink(namae);
 					rinku.setStyle("-fx-padding: 16;");
 				    rinku.setOnAction(e-> {
-								DisplayPatientInformation info=new DisplayPatientInformation(editable,hito);
+								DisplayPatientInformation info=new DisplayPatientInformation(editable,hito,files.get(hito));
 								info.showWindow();
 							});
 					dcont.add(label(hito.getDOB()), 1, row);
@@ -104,7 +171,7 @@ public class StaffPortal{
 
 	public void start() {
 		// TODO Auto-generated method stub
-		addPatient(launcher.readPatient("/home/ivan/Downloads/JDoe512241251.txt"));
+		addPatientFile("/home/ivan/Downloads/JDoe512241251.txt");
 		
 		
 	
@@ -115,6 +182,54 @@ public class StaffPortal{
 		alert.getDialogPane().setContent(scroll);
 		alert.setResizable(true);
 		alert.showAndWait();
+	}
+	//IO METHODS
+	//for reading account files
+    //when initilizing buffered reader you must first mark spot zero
+    //buff.mark(0);
+    //you could try without that but might not work
+    public static String getFieldFromFile(File f,String field) throws IOException{
+    	BufferedReader buff=new BufferedReader(new FileReader(f));//fopen("file","r");
+    	String line;
+    	while((line=buff.readLine())!=null) {
+    		if(line.startsWith(field+":")) {
+    			String retval=line.substring(line.indexOf(":")+1);
+    			while(retval.startsWith(" "))
+    				retval=retval.substring(1);
+    			buff.close();
+    			return retval;
+    		}
+    	}
+    	buff.close();
+    	return null;
+    }
+    //Patient(String username, String password, String firstname, String lastname, String email, String phonenumber, String insuranceProvider, int insuranceID, String dob, String address)
+	public static Patient readPatient(String file) {
+		try {
+		
+		
+		File buff=new File(file);
+		Patient p=new Patient(getFieldFromFile(buff, "Username"),getFieldFromFile(buff, "Password"),getFieldFromFile(buff, "First Name"),
+				getFieldFromFile(buff, "Last Name"),getFieldFromFile(buff, "Email"),Long.parseLong(getFieldFromFile(buff, "Phone Number"))
+				,getFieldFromFile(buff, "Insurance Provider"),Integer.parseInt(getFieldFromFile(buff, "Insurance ID")),
+				getFieldFromFile(buff, "Date of Birth"),getFieldFromFile(buff, "Address"), getFieldFromFile(buff,"Pharmacy"));
+
+		
+		return p;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public static void writePatient(String file,Patient p) {
+		try {
+			FileWriter fw=new FileWriter(file);
+			fw.write(p.toString());
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

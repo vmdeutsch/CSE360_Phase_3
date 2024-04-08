@@ -15,10 +15,12 @@ import javafx.scene.layout.GridPane;
 
 public class DisplayPatientInformation {
 	private boolean editable=true;
-	public DisplayPatientInformation(boolean editable,Patient pfam) {
+	private String file;
+	public DisplayPatientInformation(boolean editable,Patient pfam,String file) {
 		this.editable=editable;
 		this.kazouku=pfam;
 		setPatientData(kazouku);
+		this.file=file;
 	}
 	private Patient kazouku;
 	private Hashtable<String,String> data=new Hashtable<>();
@@ -41,7 +43,7 @@ public class DisplayPatientInformation {
 	private void writeBack() {
 		try {
 
-		kazouku.setPhoneNumber(Long.parseLong(data.get("phone").replace("-","")));
+		
 		kazouku.setFirstName(data.get("first name"));
 		kazouku.setlastName(data.get("last name"));
 		kazouku.setDOB(data.get("DOB"));
@@ -52,11 +54,13 @@ public class DisplayPatientInformation {
 		kazouku.setUsername(data.get("username"));
 		kazouku.setPharmacy(data.get("pharmacy"));
 		kazouku.setInsuranceID((int)Long.parseLong(data.get("insurance id")));
+		kazouku.setPhoneNumber(Long.parseLong(data.get("phone").replace("-","")));
 		}catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Phone number and insurance id must be all digits and or dashes");
 		}
 		//write data to file
-		
+		if(file!=null)
+			StaffPortal.writePatient(file, kazouku);
 	}
 	
 	public void showWindow() 
