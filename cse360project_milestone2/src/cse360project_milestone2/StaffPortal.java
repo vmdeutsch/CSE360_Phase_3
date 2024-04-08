@@ -228,7 +228,7 @@ public class StaffPortal{
 	//IO METHODS
 	//for reading account files
     //when initilizing buffered reader you must first mark spot zero
-    //buff.mark(0);
+    //buff.mark(0);, not working
     //you could try without that but might not work
     public static String getFieldFromFile(File f,String field) throws IOException{
     	BufferedReader buff=new BufferedReader(new FileReader(f));//fopen("file","r");
