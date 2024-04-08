@@ -9,12 +9,16 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
@@ -27,6 +31,8 @@ public class StaffPortal{
 	//public void addPatient(Patient pt) {
 	public void addPatientFile(String file) {
 		Patient p=readPatient(file);
+		if(p==null)
+			return;
 		patients.add(p);
 		files.put(p, file);
 	}
@@ -128,9 +134,9 @@ public class StaffPortal{
 		kensaku_chihou_suru(ku);
 		dcont.setGridLinesVisible(true);
 		dcont.add(label("Patient Name"), 0, 0);
-		dcont.add(label("Date Of Birth"), 1, 0);
-	    dcont.add(label("Pharmacy"), 2, 0);
-	    dcont.add(label("Phone Number"), 3, 0);
+		dcont.add(label("Date Of Birth"), 2, 0);
+	    dcont.add(label("Pharmacy"), 3, 0);
+	    dcont.add(label("Phone Number"), 4, 0);
 		Enumeration<Patient> risto=patients.elements();
 		
 		while(risto.hasMoreElements()) {
@@ -139,15 +145,21 @@ public class StaffPortal{
 			//namae=hito.getFullName();
 			if(namae.toLowerCase().contains(kensaku)) {
 					Hyperlink rinku=new Hyperlink(namae);
+					Button kawaru=new Button("edit");
 					rinku.setStyle("-fx-padding: 16;");
-				    rinku.setOnAction(e-> {
+					kawaru.setStyle("-fx-padding: 16;");
+				    kawaru.setOnAction(e-> {
 								DisplayPatientInformation info=new DisplayPatientInformation(editable,hito,files.get(hito));
 								info.showWindow();
 							});
-					dcont.add(label(hito.getDOB()), 1, row);
-				    dcont.add(label(hito.getPharmacy()), 2, row);
-				    dcont.add(label(parsePhone(hito.getPhoneNumber())), 3, row);
+				    rinku.setOnAction(e->{
+				    	//知らない
+				    });
+					dcont.add(label(hito.getDOB()), 2, row);
+				    dcont.add(label(hito.getPharmacy()), 3, row);
+				    dcont.add(label(parsePhone(hito.getPhoneNumber())), 4, row);
 					dcont.add(rinku, 0, row);
+					dcont.add(kawaru, 1, row);
 					
 					
 					row++;
@@ -156,9 +168,10 @@ public class StaffPortal{
 		ku.add(dcont, 0, 1);
 	}
 	private GridPane subete=new GridPane();
+	private TextField kensakuchihou=null;
 	private void kensaku_chihou_suru(GridPane ku){
 		GridPane chihou=new GridPane();
-		TextField kensakuchihou=new TextField("");
+		kensakuchihou=new TextField("");
 		chihou.add(kensakuchihou, 0, 0);
 		Button suru=new Button("search");
 		suru.setOnAction(e-> {
@@ -170,18 +183,47 @@ public class StaffPortal{
 	}
 
 	public void start() {
-		// TODO Auto-generated method stub
-		addPatientFile("/home/ivan/Downloads/JDoe512241251.txt");
-		
-		
-	
-		subete.setGridLinesVisible(true);
-		atarashi_risuto(subete);
-		ScrollPane scroll=new ScrollPane(subete);
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.getDialogPane().setContent(scroll);
-		alert.setResizable(true);
-		alert.showAndWait();
+	    // Directory containing patient files
+	    String directoryPath = "/home/ivan/school/CSE360/project/";
+	    
+	    // Get all files in the directory
+	    File directory = new File(directoryPath);
+	    File[] files = directory.listFiles();
+	    
+	    // If the directory is not found or empty, return
+	    if (files == null || files.length == 0) {
+	        System.out.println("No patient files found in the directory.");
+	        return;
+	    }
+	    
+	    // Iterate through each file in the directory and add it as a patient file
+	    for (File file : files) {
+	        if (file.isFile()) {
+	            addPatientFile(file.getAbsolutePath());
+	        }
+	    }
+
+	    // Display the patient information
+	    subete.setGridLinesVisible(true);
+	    atarashi_risuto(subete);
+	    ScrollPane scroll = new ScrollPane(subete);
+	    Alert alert = new Alert(AlertType.INFORMATION);
+	    alert.getDialogPane().setContent(scroll);
+	    alert.setResizable(true);
+	    //override enter key
+	    alert.getDialogPane().addEventHandler(KeyEvent.ANY, e->{
+	    	if(e.getCode()==KeyCode.ENTER) {
+	    		e.consume();
+	    		if(kensakuchihou==null)
+	    			return;
+	    		if(!kensakuchihou.getText().isBlank()) {
+	    			kensaku=kensakuchihou.getText();
+					atarashi_risuto(subete);
+	    		}
+	    		
+	    	}
+	    });
+	    alert.showAndWait();
 	}
 	//IO METHODS
 	//for reading account files

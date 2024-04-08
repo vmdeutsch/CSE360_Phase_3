@@ -3,10 +3,11 @@ package staffPortal;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import javax.swing.JOptionPane;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -55,13 +56,13 @@ public class DisplayPatientInformation {
 		kazouku.setPharmacy(data.get("pharmacy"));
 		kazouku.setInsuranceID((int)Long.parseLong(data.get("insurance id")));
 		kazouku.setPhoneNumber(Long.parseLong(data.get("phone").replace("-","")));
-		}catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Phone number and insurance id must be all digits and or dashes");
-		}
-		//write data to file
-		if(file!=null)
-			StaffPortal.writePatient(file, kazouku);
-	}
+        } catch (NumberFormatException e) {
+            showAlert("Error", "Phone number and insurance id must be all digits and or dashes");
+        }
+        //write data to file
+        if (file != null)
+            StaffPortal.writePatient(file, kazouku);
+    }
 	
 	public void showWindow() 
 	{
@@ -96,10 +97,26 @@ public class DisplayPatientInformation {
 	    if(editable)
 	    	contain.add(save, 0, row);
 		Alert alert = new Alert(AlertType.INFORMATION);
-
+      
 		alert.getDialogPane().setContent(contain);
+		alert.getDialogPane().addEventHandler(KeyEvent.ANY, e->{
+		    	if(e.getCode()==KeyCode.ENTER) {
+		    		e.consume();
+		    		writeBack();
+		    		}
+
+		    });
 		alert.showAndWait();
 		
 		
 	}
+	
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+       
+        alert.showAndWait();
+    }
 }
