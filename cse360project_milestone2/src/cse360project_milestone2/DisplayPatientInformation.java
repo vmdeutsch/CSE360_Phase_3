@@ -9,6 +9,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -96,9 +97,11 @@ public class DisplayPatientInformation {
 		save.setOnAction(e-> {writeBack();});
 	    if(editable)
 	    	contain.add(save, 0, row);
-		Alert alert = new Alert(AlertType.INFORMATION);
-      
+		Alert alert = new Alert(AlertType.NONE);
+        alert.setContentText("");
+        alert.getButtonTypes().add(ButtonType.CLOSE);
 		alert.getDialogPane().setContent(contain);
+		alert.setResizable(true);
 		alert.getDialogPane().addEventHandler(KeyEvent.ANY, e->{
 		    	if(e.getCode()==KeyCode.ENTER) {
 		    		e.consume();
@@ -106,7 +109,7 @@ public class DisplayPatientInformation {
 		    		}
 
 		    });
-		alert.showAndWait();
+		alert.show();
 		
 		
 	}

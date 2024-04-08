@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -134,9 +135,9 @@ public class StaffPortal{
 		kensaku_chihou_suru(ku);
 		dcont.setGridLinesVisible(true);
 		dcont.add(label("Patient Name"), 0, 0);
-		dcont.add(label("Date Of Birth"), 2, 0);
-	    dcont.add(label("Pharmacy"), 3, 0);
-	    dcont.add(label("Phone Number"), 4, 0);
+		dcont.add(label("Date Of Birth"), 1, 0);
+	    dcont.add(label("Pharmacy"), 2, 0);
+	    dcont.add(label("Phone Number"), 3, 0);
 		Enumeration<Patient> risto=patients.elements();
 		
 		while(risto.hasMoreElements()) {
@@ -155,11 +156,11 @@ public class StaffPortal{
 				    rinku.setOnAction(e->{
 				    	//知らない
 				    });
-					dcont.add(label(hito.getDOB()), 2, row);
-				    dcont.add(label(hito.getPharmacy()), 3, row);
-				    dcont.add(label(parsePhone(hito.getPhoneNumber())), 4, row);
+					dcont.add(label(hito.getDOB()), 1, row);
+				    dcont.add(label(hito.getPharmacy()), 2, row);
+				    dcont.add(label(parsePhone(hito.getPhoneNumber())), 3, row);
 					dcont.add(rinku, 0, row);
-					dcont.add(kawaru, 1, row);
+					dcont.add(kawaru, 4, row);
 					
 					
 					row++;
@@ -206,8 +207,11 @@ public class StaffPortal{
 	    // Display the patient information
 	    subete.setGridLinesVisible(true);
 	    atarashi_risuto(subete);
+	  
 	    ScrollPane scroll = new ScrollPane(subete);
-	    Alert alert = new Alert(AlertType.INFORMATION);
+	    Alert alert = new Alert(AlertType.NONE);
+	    alert.setTitle("Staff Portal");
+	    alert.getButtonTypes().add(ButtonType.CLOSE);
 	    alert.getDialogPane().setContent(scroll);
 	    alert.setResizable(true);
 	    //override enter key
@@ -223,7 +227,7 @@ public class StaffPortal{
 	    		
 	    	}
 	    });
-	    alert.showAndWait();
+	    alert.show();
 	}
 	//IO METHODS
 	//for reading account files
