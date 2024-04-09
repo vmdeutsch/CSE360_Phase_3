@@ -5,7 +5,6 @@
 
 package cse360project_milestone2;
 
-import cse360project_milestone2.Patient;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -35,7 +34,6 @@ public class Login extends Application{
 	@Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Login");
-        
 
         // Create grid pane layout
         GridPane gridPane = new GridPane();
@@ -43,6 +41,10 @@ public class Login extends Application{
         gridPane.setVgap(10);
         gridPane.setHgap(10);
         
+        /*
+        StaffPortal staffPortal = new StaffPortal();
+        staffPortal.start();
+        */
 
         // Declartion of Labels:
         // The username label.
@@ -68,45 +70,54 @@ public class Login extends Application{
         loginButton.setOnAction(e -> {
             String enteredUsername = usernameInput.getText();
             String enteredPassword = passwordInput.getText();
+            boolean loggedIn = false;
+            String accountType = null;
 
             // Check if the account exists based on the file system
-            File accountFile = new File("src/cse360project_milestone2/accounts/patients/" + enteredUsername + ".txt");
-            if (accountFile.exists()) {
-                // Read the account information from the file
-                try (BufferedReader reader = new BufferedReader(new FileReader(accountFile))) {
-                    Map<String, String> accountDetails = new HashMap<>();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        // Split the line into key and value using colon (:) as delimiter
-                        String[] parts = line.split(":");
-                        if (parts.length == 2) {
-                            String key = parts[0].trim();
-                            String value = parts[1].trim();
-                            accountDetails.put(key, value);
-                        }
-                    }
-                    // Check if all necessary fields are present
-                    if (accountDetails.containsKey("Password")) {
-                        String storedPassword = accountDetails.get("Password");
-                        // Check if entered password matches stored password
-                        if (enteredPassword.equals(storedPassword)) {
-                            // Passwords match, login successful
-                            System.out.println("Logged in");
-                            return; // Exit the event handler
-                        }
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+            File patientAccountFile = new File("src/cse360project_milestone2/accounts/patients/" + enteredUsername + ".txt");
+            File doctorAccountFile = new File("src/cse360project_milestone2/accounts/doctors/" + enteredUsername + ".txt");
+            File nurseAccountFile = new File("src/cse360project_milestone2/accounts/nurses/" + enteredUsername + ".txt");
+
+            if (patientAccountFile.exists()) {
+                loggedIn = checkCredentials(patientAccountFile, enteredPassword);
+                accountType = "patient";
+            } else if (doctorAccountFile.exists()) {
+                loggedIn = checkCredentials(doctorAccountFile, enteredPassword);
+                accountType = "doctor";
+            } else if (nurseAccountFile.exists()) {
+                loggedIn = checkCredentials(nurseAccountFile, enteredPassword);
+                accountType = "nurse";
             }
 
-            // If execution reaches here, login failed
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Login Error");
-            alert.setHeaderText("Invalid Username or Password");
-            alert.setContentText("Please check your username and password and try again.");
-            alert.showAndWait();
+            if (loggedIn) {
+                // Close the login GUI
+                CurrentUser.setUsername(enteredUsername);
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.close();
+
+                if (accountType.equals("patient")) {
+                    PatientPortal patientPortal = new PatientPortal();
+                    patientPortal.start(primaryStage);
+                    // Display login confirmation for patient
+                } else {
+                    // Open the staff portal for doctors and nurses
+                    StaffPortal staffPortal = new StaffPortal();
+                    try {
+                        staffPortal.start();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            } else {
+                // Login failed
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Login Error");
+                alert.setHeaderText("Invalid Username or Password");
+                alert.setContentText("Please check your username and password and try again.");
+                alert.showAndWait();
+            }
         });
+
         
         // The create and account button
         Button createaccountButton = new Button("Create an Account");
@@ -231,7 +242,7 @@ public class Login extends Application{
             
             if (!phonenumberStr.isEmpty()) {
                 try {
-                    phonenumber = Long.parseLong(phonenumberStr); // Convert String to int
+                    phonenumber = Long.parseLong(phonenumberStr); //
                 } catch (NumberFormatException ex) {
                     // phonenumberInput.getText() is not convertible to int
                     // Handle the error here, such as showing a dialog box
@@ -289,6 +300,33 @@ public class Login extends Application{
         createAccountStage.setScene(scene);
         createAccountStage.show();
     }
+	
+	private boolean checkCredentials(File accountFile, String enteredPassword) {
+	    try (BufferedReader reader = new BufferedReader(new FileReader(accountFile))) {
+	        Map<String, String> accountDetails = new HashMap<>();
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            // Split the line into key and value using colon (:) as delimiter
+	            String[] parts = line.split(":");
+	            if (parts.length == 2) {
+	                String key = parts[0].trim();
+	                String value = parts[1].trim();
+	                accountDetails.put(key, value);
+	            }
+	        }
+	        // Check if all necessary fields are present
+	        if (accountDetails.containsKey("Password")) {
+	            String storedPassword = accountDetails.get("Password");
+	            // Check if entered password matches stored password
+	            if (enteredPassword.equals(storedPassword)) {
+	                return true; // Passwords match, login successful
+	            }
+	        }
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+	    return false; // Login failed
+	}
 	
     public static void main(String[] args) {
         launch(args);
