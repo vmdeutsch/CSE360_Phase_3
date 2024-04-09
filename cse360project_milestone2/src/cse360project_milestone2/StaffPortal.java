@@ -225,7 +225,7 @@ public class StaffPortal{
 
 	}
 	public void start() {
-	   
+	    statDirectory();//read upon launching the UI
 	    // Display the patient information
 	    subete.setGridLinesVisible(true);
 	    atarashi_risuto(subete);
