@@ -1,4 +1,4 @@
-package cse360project_milestone2;
+package staffPortal;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -179,13 +179,32 @@ public class StaffPortal{
 				kensaku=kensakuchihou.getText();
 				atarashi_risuto(subete);
 			});
+		Button msg=new Button("messages");
+		msg.setOnAction(e->{
+			//not implemented
+		});
+		chihou.add(msg, 2, 0);
 		chihou.add(suru, 1, 0);
 		ku.add(chihou, 0, 0);
 	}
-
-	public void start() {
-	    // Directory containing patient files
-	    String directoryPath = "src/cse360project_milestone2/accounts/patients/";
+	//clear structures
+	public void clearPatients() {
+		patients.clear();
+		files.clear();
+	}
+	//write all the patients to the file system
+	public void writeStructures() {
+		Enumeration<String> dekey=files.elements();
+		Enumeration<Patient> pe=files.keys();
+		while(pe.hasMoreElements()) {
+			Patient pt=pe.nextElement();
+			String path=dekey.nextElement();
+			writePatient(path,pt);
+		}
+	}
+	public void statDirectory() {
+		 // Directory containing patient files
+	    String directoryPath = "/home/ivan/school/CSE360/project/";
 	    
 	    // Get all files in the directory
 	    File directory = new File(directoryPath);
@@ -204,6 +223,9 @@ public class StaffPortal{
 	        }
 	    }
 
+	}
+	public void start() {
+	   
 	    // Display the patient information
 	    subete.setGridLinesVisible(true);
 	    atarashi_risuto(subete);
