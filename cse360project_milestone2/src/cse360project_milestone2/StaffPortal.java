@@ -1,4 +1,4 @@
-package staffPortal;
+package  cse360project_milestone2;
 
 import java.io.BufferedReader;
 import java.io.File;
