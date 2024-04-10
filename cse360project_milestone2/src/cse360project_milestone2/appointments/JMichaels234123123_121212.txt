@@ -1,0 +1,9 @@
+Blood Pressure: 123
+Heart Rate: 123
+Temperature: 123
+Nurse Questionnaire: Nurse Questionnaire:
+- What is your eye color?
+- What is your hair color?
+- Any allergies?
+Pulse Rate: 123
+Doctor's Notes: hello this is a test

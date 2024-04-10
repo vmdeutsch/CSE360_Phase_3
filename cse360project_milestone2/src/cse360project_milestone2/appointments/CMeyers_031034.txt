@@ -1,0 +1,9 @@
+Blood Pressure: 4564
+Heart Rate: 456
+Temperature: 456
+Nurse Questionnaire: Nurse Questionnaire:
+- What is your eye color?
+- What is your hair color?
+- Any allergies?
+Pulse Rate: 456
+Doctor's Notes: 23464356456456
