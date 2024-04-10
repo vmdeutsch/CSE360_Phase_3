@@ -184,7 +184,12 @@ public class StaffPortal{
 		hidari_gawa.add(msg, 0, 0);
 		Button btn=new Button("Messages");
 		btn.setOnAction(e->{
-			//not implemented
+			if(session!=null) {
+				session.close();
+				Stage scene=new Stage();
+				MessageSystem msystem=new MessageSystem();
+				msystem.start(scene);
+			}
 		});
 		
 		hidari_gawa.add(btn, 0, 1);
