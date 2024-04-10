@@ -156,8 +156,14 @@ public class StaffPortal{
 								DisplayPatientInformation info=new DisplayPatientInformation(editable,hito,files.get(hito));
 								info.showWindow();
 							});
-				    rinku.setOnAction(e->{
-				    	//知らない
+				     rinku.setOnAction(e->{
+				    	if(session!=null)
+				    		session.close();
+				    	CurrentUser.setUsername(namae);
+				    	PatientPortal ptportal=new PatientPortal();
+				    	Stage scene=new Stage();
+				    	ptportal.start(scene);
+				    
 				    });
 					dcont.add(label(hito.getDOB()), 1, row);
 				    dcont.add(label(hito.getPharmacy()), 2, row);
