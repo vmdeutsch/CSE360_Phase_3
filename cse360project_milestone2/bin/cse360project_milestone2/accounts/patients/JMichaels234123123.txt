@@ -1,0 +1,11 @@
+Username: JMichaels234123123
+Password: jmike1972
+First Name: Joseph
+Last Name: Michaels
+Email: jmike@gmail.com
+Phone Number: 234123123
+Insurance Provider: Miller
+Insurance ID: 23421651
+Date of Birth: 05/25/1972
+Address: 9683 N Right Ln
+Pharmacy: Wallgreens

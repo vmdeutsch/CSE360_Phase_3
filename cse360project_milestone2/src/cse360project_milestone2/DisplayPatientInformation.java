@@ -1,4 +1,4 @@
-package  cse360project_milestone2;
+package cse360project_milestone2;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

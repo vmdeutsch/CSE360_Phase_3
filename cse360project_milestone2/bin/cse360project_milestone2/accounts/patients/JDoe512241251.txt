@@ -3,8 +3,9 @@ Password: TestTest
 First Name: John
 Last Name: Doe
 Email: jdoe@gmail.com
-Phone Number: 512241251
+Phone Number: 5122412512
 Insurance Provider: Apriva Care
 Insurance ID: 12312541
 Date of Birth: 01/01/1961
 Address: 8937 W Road Ln
+Pharmacy: CVS

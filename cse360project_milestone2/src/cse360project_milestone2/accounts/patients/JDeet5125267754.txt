@@ -1,0 +1,11 @@
+Username: JDeet5125267754
+Password: 1234
+First Name: John
+Last Name: Deet
+Email: awsd@gmail.com
+Phone Number: 5125267754
+Insurance Provider: 242
+Insurance ID: 23423
+Date of Birth: 01/01/2001
+Address: 3452 w T road
+Pharmacy: CVS

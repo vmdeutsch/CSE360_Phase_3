@@ -1,0 +1,11 @@
+Username: JRetten1235762361
+Password: 1234
+First Name: Joshua
+Last Name: Retten
+Email: awdjkhajh@gmail.com
+Phone Number: 1235762361
+Insurance Provider: Care
+Insurance ID: 12315
+Date of Birth: 01/01/1921
+Address: 1235 w Stephens Dr
+Pharmacy: CVS

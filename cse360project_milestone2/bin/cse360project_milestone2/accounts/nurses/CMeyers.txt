@@ -1,0 +1,7 @@
+Username: CMeyers
+Password: mypasswordisbetter
+First Name: Christian
+Last Name: Meyers
+Email: cmeyers@gmail.com
+Phone Number: 223123123
+Degree: Bachelor of Science in Nursing

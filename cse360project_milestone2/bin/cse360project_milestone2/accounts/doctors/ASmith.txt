@@ -1,0 +1,7 @@
+Username: ASmith
+Password: mypassword
+First Name: Aaron
+Last Name: Smith
+Email: asmith@gmail.com
+Phone Number: 323125123
+Degree: Doctorate of Podiatric Medicine
