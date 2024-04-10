@@ -1,4 +1,4 @@
-package appointmentGUI;
+package cse360project_milestone2;
 
 //import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -8,8 +8,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
+import java.io.File;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,21 +25,22 @@ public class Appointments{
 	
     private Map<String, Map<String, String>> appointments;
     private String currUser; //store current user temp var
-    private String currRole; // store current Role in temp var
+    private String currRole; // store current Role in temp 
+    private String currPatient;
     private String selectedAppointment;
+
 
  
     public void start(Stage primaryStage) {
         // Initialize appointments
-        initializeAppointments();
-        CurrentUser.setUsername("Weinor");
+    	appointments = new HashMap<>();
         //get user
         currUser = CurrentUser.getUsername();
+        currPatient = CurrentUser.getCurrentPatient();
         
         //set user role
-        CurrentUser.setRole("Doctor");
         currRole = CurrentUser.getRole();
-        
+    	initializeAppointments();
         // UI Components
         BorderPane borderPane = new BorderPane();
         borderPane.setPadding(new Insets(10));
@@ -109,15 +112,30 @@ public class Appointments{
 
 
         backButton.setOnAction(event -> {
-            // Add so go back to dashboard 
-            showAlert("Back button clicked!");
-        });
+            String role = CurrentUser.getRole();
+            if (role.equals("Patient")) {
+                PatientPortal patientPortal = new PatientPortal(); 
+                Stage patientPortalStage = new Stage();
+                patientPortal.start(patientPortalStage);
+            } else if (role.equals("Doctor") || role.equals("Nurse")) {
+                StaffPortal staffPortal = new StaffPortal(); 
+                staffPortal.start();
+            }
+            primaryStage.close(); 
+     });
 
-        logoutButton.setOnAction(event -> {
-            // Add so that currUser = null and goes to login
-            showAlert("Logout button clicked!");
-        });
-
+     logoutButton.setOnAction(event -> {
+         if(primaryStage!=null) {
+             primaryStage.close();
+             Login login = new Login();
+             CurrentUser.setUsername(null);
+             try {
+                 login.start(primaryStage);
+             } catch (Exception ex) {
+                 ex.printStackTrace();
+             }
+         }
+     });
         createNewAppointmentButton.setOnAction(event -> {
             // Create New Appointment button clicked
             TextInputDialog dialog = new TextInputDialog();
@@ -158,12 +176,12 @@ public class Appointments{
         appointmentFields.put("Nurse Questionnaire", nurseQuestionnaireArea.getText());
         
         try {
-            Path directoryPath = Paths.get("src/cse360project_milestone2/Appointment"); 
+            Path directoryPath = Paths.get("src/cse360project_milestone2/appointments"); 
             if (!Files.exists(directoryPath)) {
                 Files.createDirectories(directoryPath);
             }
 
-            String fileName = currUser.replaceAll("\\s+", "") + "_" + selectedAppointment.replaceAll("/", "") + ".txt";
+            String fileName = currPatient.replaceAll("\\s+", "") + "_" + selectedAppointment.replaceAll("/", "") + ".txt";
             Path filePath = directoryPath.resolve(fileName);
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()));
             for (Map.Entry<String, String> entry : appointmentFields.entrySet()) {
@@ -249,15 +267,46 @@ public class Appointments{
     }
 
     private void initializeAppointments() {
-        appointments = new HashMap<>();
-        // Load appointments from files or database
-        // For now, I'm adding sample data
-        appointments.put("01/29/24", new HashMap<>());
-        appointments.put("01/17/24", new HashMap<>());
-        appointments.put("01/17/24", new HashMap<>());
-        // Simulate logged in user (extracting name from file name)
-        String fileName = "JDoe512241251.txt"; // example file name
-        currUser = fileName.substring(0, fileName.indexOf("512")).replaceAll("(\\d+|\\.\\d+)", "").trim(); // extract user name
+        File directory = new File("src/cse360project_milestone2/appointments");
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    String fileName = file.getName();
+                    String username = "";
+                    String date = "";
+                    int underscoreIndex = fileName.lastIndexOf("_");
+                    int dotIndex = fileName.lastIndexOf(".");
+                    if (underscoreIndex != -1 && dotIndex != -1 && dotIndex > underscoreIndex) {
+                        username = fileName.substring(0, underscoreIndex);
+                        date = fileName.substring(underscoreIndex + 1, dotIndex);
+                    } else {
+                        // Log an error or handle the invalid file name
+                    }
+                    if(currRole.equals("Doctor")|| currRole.equals("Nurse")||currRole.equals("Patient")){
+                        if (currPatient.equals(username)) {
+                                appointments.put(date, readAppointmentFromFile(file));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private Map<String, String> readAppointmentFromFile(File file) {
+        Map<String, String> appointmentFields = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(": ");
+                if (parts.length == 2) {
+                    appointmentFields.put(parts[0], parts[1]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return appointmentFields;
     }
 
     private void showAlert(String message) {
