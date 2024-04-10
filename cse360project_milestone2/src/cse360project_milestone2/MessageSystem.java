@@ -1,6 +1,5 @@
 package cse360project_milestone2;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,14 +7,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.File;
-
 import javafx.scene.input.MouseEvent;
 
 
-public class MessageSystem extends Application {
+public class MessageSystem{
 	private VBox messageList;
 	private String filename;
-    @Override
     public void start(Stage primaryStage) {
         // Root Layout
         BorderPane root = new BorderPane();
@@ -67,7 +64,7 @@ public class MessageSystem extends Application {
     
     public void loadMessagesFromFiles() {
     	//CurrentUser.setUsername("Gavin");
-    	String cu=CurrentUser.getUsername();
+    	//String cu=CurrentUser.getUsername();
     	System.getProperty("user.dir");
     	String messagefiledestination = "src/cse360project_milestone2/messages/";
         File directory = new File(messagefiledestination); 
@@ -78,7 +75,6 @@ public class MessageSystem extends Application {
             for (File file : files) {
                 filename = file.getName();
                 String fname=filename;
-                System.out.println("Reading file: " + filename);
                 String[] parts = filename.split("_");
                 String temp= parts[1];
                 String[] part2 = temp.split("-");
@@ -116,11 +112,6 @@ public class MessageSystem extends Application {
 
      return thread;
  }
-
- // ... (rest of the code - same as before)
-    
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
+ // ... (rest of the code - same as before)
+   
