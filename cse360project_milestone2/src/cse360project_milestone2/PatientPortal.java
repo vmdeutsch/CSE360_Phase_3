@@ -162,6 +162,20 @@ public class PatientPortal extends Application {
             mainGrid.add(showMedicalHistorySection(contentPane), 0, 0, 3, 1);
         });
 
+	messagesButton.setOnAction(event -> {
+            MessageSystem messageSystem = new MessageSystem();
+            Stage messagesStage = new Stage();
+            messageSystem.start(messagesStage);
+            primaryStage.close();
+        });
+        
+        appointmentsButton.setOnAction(event -> {
+            Appointments Appointment = new Appointments();
+            Stage AppointmentsStage = new Stage();
+            Appointment.start(AppointmentsStage);
+            primaryStage.close();
+        });
+
 		logoutButton.setOnAction(e->{
 			if(primaryStage!=null) {
 				primaryStage.close();
