@@ -34,7 +34,7 @@ public class PatientPortal extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        patientId = CurrentUser.getUsername();;
+        patientId = CurrentUser.getCurrentPatient();;
         // Instantiate text fields
         nameField = new TextField();
         phoneField = new TextField();
