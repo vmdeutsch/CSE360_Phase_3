@@ -144,7 +144,7 @@ public class StaffPortal{
 		Enumeration<Patient> risto=patients.elements();
 		
 		while(risto.hasMoreElements()) {
-			Patient hito=risto.nextElement();
+			final Patient hito=risto.nextElement();
 			final String namae=hito.getLastName()+", "+hito.getFirstName();
 			//namae=hito.getFullName();
 			if(namae.toLowerCase().contains(kensaku)) {
@@ -159,7 +159,7 @@ public class StaffPortal{
 				     rinku.setOnAction(e->{
 				    	if(session!=null)
 				    		session.close();	     
-				    	CurrentUser.setCurrentPatient(String currentPatient) (namae);
+				    	CurrentUser.setCurrentPatient(hito.getUsername());
 				    	PatientPortal ptportal=new PatientPortal();
 				    	Stage scene=new Stage();
 				    	ptportal.start(scene);
