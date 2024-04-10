@@ -158,8 +158,8 @@ public class StaffPortal{
 							});
 				     rinku.setOnAction(e->{
 				    	if(session!=null)
-				    		session.close();
-				    	CurrentUser.setUsername(namae);
+				    		session.close();	     
+				    	CurrentUser.setCurrentPatient(String currentPatient) (namae);
 				    	PatientPortal ptportal=new PatientPortal();
 				    	Stage scene=new Stage();
 				    	ptportal.start(scene);
