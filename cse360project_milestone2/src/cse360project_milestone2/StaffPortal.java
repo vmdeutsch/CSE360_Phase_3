@@ -1,4 +1,4 @@
-package  cse360project_milestone2;
+package staffPortal;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +28,7 @@ public class StaffPortal{
 	
 	private Vector<Patient> patients=new Vector<>();
 	private Hashtable<Patient,String> files=new Hashtable<>();
+	private Alert session=null;
 	
 	//public void addPatient(Patient pt) {
 	public void addPatientFile(String file) {
@@ -132,6 +133,7 @@ public class StaffPortal{
 		int row=1;
 		ku.getChildren().clear();
 		GridPane dcont=new GridPane();
+		moto_miru_suru(ku);
 		kensaku_chihou_suru(ku);
 		dcont.setGridLinesVisible(true);
 		dcont.add(label("Patient Name"), 0, 0);
@@ -166,10 +168,39 @@ public class StaffPortal{
 					row++;
 			}
 		}
-		ku.add(dcont, 0, 1);
+		ku.add(dcont, 1, 1);
 	}
 	private GridPane subete=new GridPane();
 	private TextField kensakuchihou=null;
+	private void moto_miru_suru(GridPane k_chi) {
+		GridPane hidari_gawa=new GridPane();
+		Button msg=new Button("Dashboard");
+		msg.setOnAction(e->{
+			//not implemented
+		});
+		hidari_gawa.add(msg, 0, 0);
+		Button btn=new Button("Messages");
+		btn.setOnAction(e->{
+			//not implemented
+		});
+		
+		hidari_gawa.add(btn, 0, 1);
+		btn=new Button("Help");
+		btn.setOnAction(e->{
+			//not implemented
+		});
+		hidari_gawa.add(btn, 0, 2);
+		btn=new Button("Logout");
+		btn.setOnAction(e->{
+			if(session!=null) {
+				session.close();
+			}
+			CurrentUser.setUsername(null);
+		});
+		hidari_gawa.add(btn, 0, 3);
+		hidari_gawa.setStyle("-fx-padding: 16;-fx-vgap: 16;");
+		k_chi.add(hidari_gawa, 0, 0);
+	}
 	private void kensaku_chihou_suru(GridPane ku){
 		GridPane chihou=new GridPane();
 		kensakuchihou=new TextField("");
@@ -179,13 +210,10 @@ public class StaffPortal{
 				kensaku=kensakuchihou.getText();
 				atarashi_risuto(subete);
 			});
-		Button msg=new Button("messages");
-		msg.setOnAction(e->{
-			//not implemented
-		});
-		chihou.add(msg, 2, 0);
+		
+		
 		chihou.add(suru, 1, 0);
-		ku.add(chihou, 0, 0);
+		ku.add(chihou, 1, 0);
 	}
 	//clear structures
 	public void clearPatients() {
@@ -225,7 +253,7 @@ public class StaffPortal{
 
 	}
 	public void start() {
-	    statDirectory();//read upon launching the UI
+		statDirectory();//read upon launching the UI
 	    // Display the patient information
 	    subete.setGridLinesVisible(true);
 	    atarashi_risuto(subete);
@@ -236,6 +264,7 @@ public class StaffPortal{
 	    alert.getButtonTypes().add(ButtonType.CLOSE);
 	    alert.getDialogPane().setContent(scroll);
 	    alert.setResizable(true);
+	    session=alert;
 	    //override enter key
 	    alert.getDialogPane().addEventHandler(KeyEvent.ANY, e->{
 	    	if(e.getCode()==KeyCode.ENTER) {
