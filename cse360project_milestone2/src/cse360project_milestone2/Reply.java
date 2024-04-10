@@ -1,3 +1,5 @@
+//Bhavya Patel
+
 package cse360project_milestone2;
 
 import javafx.geometry.Insets;
@@ -14,18 +16,12 @@ import java.io.IOException;
 import java.util.List;
 import java.io.File;
 
-
 public class Reply {
-
-    private String filename; // filename of the message being replied to
-
+    private String filename; 
     public Reply(String filename) {
         this.filename = filename;
     }
-
-    
     public void showWindow() {
-    	//CurrentUser.setUsername("Gavin");
     	String cu=CurrentUser.getUsername();
     	Stage stage = new Stage();
         VBox root = new VBox(20);
@@ -33,51 +29,39 @@ public class Reply {
         TextArea conversationArea = new TextArea();
         conversationArea.setEditable(false); 
         loadConversation(conversationArea); 
-        
         TextArea replyArea = new TextArea();
         replyArea.setPromptText("Enter your reply...");
-
         Button sendButton = new Button("Send");
-        
-        
         sendButton.setOnAction(event -> {
-            String replyMessage = replyArea.getText().trim(); // Trim whitespace
-
-            // Check if reply is empty
+            String replyMessage = replyArea.getText().trim();
             if (replyMessage.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Empty Reply");
                 alert.setContentText("Please enter a reply before sending.");
                 alert.showAndWait();
-                return; // Don't proceed with sending
+                return;
             }
-
             try{
             	System.getProperty("user.dir");
                 String messagefiledestination = "src/cse360project_milestone2/messages/"+filename;
             	try (FileWriter writer = new FileWriter(messagefiledestination, true)) {
-					writer.write("\n" + cu + ": " + replyMessage); // Add newlines before reply
+					writer.write("\n" + cu + ": " + replyMessage);
 					stage.close();
 				}
             } catch (IOException e) {
                 e.printStackTrace();
-                // Display an error message to the user
             }
         });
 
         Button backButton = new Button("Back");
         backButton.setOnAction(event -> stage.close());
-
         root.getChildren().addAll(conversationArea, replyArea, sendButton, backButton);
         root.setAlignment(Pos.CENTER);
-
         Scene scene = new Scene(root, 800, 600);
         stage.setScene(scene);
         stage.show();
     }
-    
-    
     
     private void loadConversation(TextArea conversationArea) {
         try {
@@ -91,11 +75,9 @@ public class Reply {
             } else {
                 conversationArea.setText("File not found: " + filename);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
             conversationArea.setText("Error loading conversation");
         }
     }  
 }
-
