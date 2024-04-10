@@ -162,7 +162,19 @@ public class PatientPortal extends Application {
             mainGrid.add(showMedicalHistorySection(contentPane), 0, 0, 3, 1);
         });
 
-        logoutButton.setOnAction(e -> primaryStage.close());
+		logoutButton.setOnAction(e->{
+			if(primaryStage!=null) {
+				primaryStage.close();
+			    Login login = new Login();
+				CurrentUser.setUsername(null);
+			    try {
+			        login.start(primaryStage);
+			    } catch (Exception ex) {
+			        ex.printStackTrace();
+			    }
+			}
+			
+		});
         // Set action for dashboard button
         dashboardButton.setOnAction(e -> {
             // Clear the mainGrid
@@ -406,7 +418,7 @@ public class PatientPortal extends Application {
 
 	private List<String> loadPrescriptions(String patientId) {
 	    List<String> prescriptions = new ArrayList<>();
-	    String filename = "prescriptions/" + patientId + ".txt";
+	    String filename = "src/cse360project_milestone2/prescriptions/" + patientId + ".txt";
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 	        String line;
 	        while ((line = reader.readLine()) != null) {
@@ -471,7 +483,7 @@ public class PatientPortal extends Application {
 
 
 	private String loadMedicalHistory(String patientId) {
-	    String filename = "medicalhistory/" + patientId + ".txt";
+	    String filename = "src/cse360project_milestone2/medicalhistory/" + patientId + ".txt";
 	    StringBuilder medicalHistory = new StringBuilder();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 	        String line;
