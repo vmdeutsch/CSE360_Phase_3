@@ -459,6 +459,17 @@ public class PatientPortal extends Application {
 	    return contentPane;
 	}
 
+	private void createBlankFile(String filename) {
+	    try {
+	        File file = new File(filename);
+	        file.getParentFile().mkdirs(); // Create directories if they don't exist
+	        file.createNewFile(); // Create the file
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
 	private String loadMedicalHistory(String patientId) {
 	    String filename = "medicalhistory/" + patientId + ".txt";
 	    StringBuilder medicalHistory = new StringBuilder();
