@@ -1,4 +1,4 @@
-package PatientPortal;
+package cse360project_milestone2;
 
 public class InsuranceInfo {
     private String provider;
