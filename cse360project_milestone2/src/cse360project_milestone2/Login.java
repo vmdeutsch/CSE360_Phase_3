@@ -82,6 +82,7 @@ public class Login extends Application{
                 loggedIn = checkCredentials(patientAccountFile, enteredPassword);
                 accountType = "patient";
                 CurrentUser.setRole("Patient");
+                CurrentUser.setCurrentPatient(enteredUsername);
             } else if (doctorAccountFile.exists()) {
                 loggedIn = checkCredentials(doctorAccountFile, enteredPassword);
                 accountType = "doctor";

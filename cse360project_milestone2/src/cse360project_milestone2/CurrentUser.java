@@ -3,6 +3,7 @@ package cse360project_milestone2;
 public class CurrentUser {
     private static String username;
     private static String role;
+    private static String currentPatient;
 
     // Private constructor to prevent instantiation
     private CurrentUser() {}
@@ -21,5 +22,13 @@ public class CurrentUser {
 
     public static void setRole(String role) {
         CurrentUser.role = role;
+    }
+    
+    public static String getCurrentPatient() {
+        return currentPatient;
+    }
+    
+    public static void setCurrentPatient(String currentPatient) {
+        CurrentUser.currentPatient = currentPatient;
     }
 }
