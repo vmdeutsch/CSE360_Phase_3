@@ -81,12 +81,15 @@ public class Login extends Application{
             if (patientAccountFile.exists()) {
                 loggedIn = checkCredentials(patientAccountFile, enteredPassword);
                 accountType = "patient";
+                CurrentUser.setRole("Patient");
             } else if (doctorAccountFile.exists()) {
                 loggedIn = checkCredentials(doctorAccountFile, enteredPassword);
                 accountType = "doctor";
+                CurrentUser.setRole("Doctor");
             } else if (nurseAccountFile.exists()) {
                 loggedIn = checkCredentials(nurseAccountFile, enteredPassword);
                 accountType = "nurse";
+                CurrentUser.setRole("Nurse");
             }
 
             if (loggedIn) {
