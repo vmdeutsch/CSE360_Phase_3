@@ -1,4 +1,4 @@
-package cse360project_milestone2;
+package staffPortal;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -133,8 +133,9 @@ public class StaffPortal{
 		int row=1;
 		ku.getChildren().clear();
 		GridPane dcont=new GridPane();
+		GridPane scont=new GridPane();
 		moto_miru_suru(ku);
-		kensaku_chihou_suru(ku);
+		kensaku_chihou_suru(scont);
 		dcont.setGridLinesVisible(true);
 		dcont.add(label("Patient Name"), 0, 0);
 		dcont.add(label("Date Of Birth"), 1, 0);
@@ -168,7 +169,9 @@ public class StaffPortal{
 					row++;
 			}
 		}
-		ku.add(dcont, 1, 1);
+		scont.add(dcont, 1, 1);
+		ku.add(scont, 1, 0);
+		
 	}
 	private GridPane subete=new GridPane();
 	private TextField kensakuchihou=null;
