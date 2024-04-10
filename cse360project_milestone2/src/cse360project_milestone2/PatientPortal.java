@@ -10,9 +10,11 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientPortal extends Application {
 	private Button insuranceButton, prescriptionsButton, medicalHistoryButton, appointmentsButton, dashboardButton;
