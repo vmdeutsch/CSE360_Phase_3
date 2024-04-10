@@ -16,7 +16,7 @@ public class launcher extends Application {
 		/*arg0.setScene(new Scene(null,300,300));
 		arg0.show();*/
 		Stage st = new Stage();
-		CSE360_Phase_3_Appointment portal=new CSE360_Phase_3_Appointment();
+		Appointments portal=new Appointments();
         portal.start(st);
 	}
 }
