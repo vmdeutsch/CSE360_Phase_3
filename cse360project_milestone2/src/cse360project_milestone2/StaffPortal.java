@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-
+import javafx.stage.Stage;
 
 
 import javafx.scene.control.Alert;
@@ -197,8 +197,16 @@ public class StaffPortal{
 		btn.setOnAction(e->{
 			if(session!=null) {
 				session.close();
+			    Login login = new Login();
+			    Stage primaryStage = new Stage();
+				CurrentUser.setUsername(null);
+			    try {
+			        login.start(primaryStage);
+			    } catch (Exception ex) {
+			        ex.printStackTrace();
+			    }
 			}
-			CurrentUser.setUsername(null);
+			
 		});
 		hidari_gawa.add(btn, 0, 3);
 		hidari_gawa.setStyle("-fx-padding: 16;-fx-vgap: 16;");
@@ -235,7 +243,7 @@ public class StaffPortal{
 	}
 	public void statDirectory() {
 		 // Directory containing patient files
-	    String directoryPath = "/home/ivan/school/CSE360/project/";
+	    String directoryPath = "src/cse360project_milestone2/accounts/patients/";
 	    
 	    // Get all files in the directory
 	    File directory = new File(directoryPath);
