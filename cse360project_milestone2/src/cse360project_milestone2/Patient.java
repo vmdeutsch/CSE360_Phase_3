@@ -5,8 +5,7 @@ public class Patient extends Account {
     private int insuranceID;
     private String dob;
     private String address;
-    private String pharmacy; // New attribute
-    // Add any additional attributes specific to Patient class here
+    private String pharmacy;
 
     public Patient(String username, String password, String firstname, String lastname, String email, long phonenumber, String insuranceProvider, int insuranceID, String dob, String address, String pharmacy) {
         super(username, password, firstname, lastname, email, phonenumber);
@@ -15,7 +14,6 @@ public class Patient extends Account {
         this.dob = dob;
         this.address = address;
         this.pharmacy = pharmacy;
-        // Initialize any additional attributes specific to Patient class here
     }
 
     // Getter and setter for insuranceProvider
@@ -60,7 +58,6 @@ public class Patient extends Account {
     }
 
     
-    // You can override toString method if you want to include insurance provider
     @Override
     public String toString() {
         return super.toString() + "\n" +
@@ -68,7 +65,6 @@ public class Patient extends Account {
                "Insurance ID: " + insuranceID + "\n" +
                "Date of Birth: " + dob + "\n" +
                "Address: " + address + "\n" +
-               "Pharmacy: " + pharmacy; // Include pharmacy in the toString method
+               "Pharmacy: " + pharmacy; 
     }
-    // Add any additional methods specific to Patient class here
 }

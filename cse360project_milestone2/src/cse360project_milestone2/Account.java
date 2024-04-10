@@ -6,7 +6,7 @@
 package cse360project_milestone2;
 
 public class Account {
-    private String username; //synonymous with userID and patientID.
+    private String username; 
     private String password;
     private String firstname;
     private String lastname;

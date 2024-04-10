@@ -40,29 +40,20 @@ public class Login extends Application{
         gridPane.setPadding(new Insets(20, 20, 20, 20));
         gridPane.setVgap(10);
         gridPane.setHgap(10);
-        
-        /*
-        StaffPortal staffPortal = new StaffPortal();
-        staffPortal.start();
-        */
 
         // Declartion of Labels:
         // The username label.
         Label usernameLabel = new Label("Username:");
-        //GridPane.setConstraints(usernameLabel, 0, 0);
         
         // The password label.
         Label passwordLabel = new Label("Password:");
-        //GridPane.setConstraints(passwordLabel, 0, 1);
 
         //Text Field declarations.
         // Where the username is actually entered.
         TextField usernameInput = new TextField();
-        //GridPane.setConstraints(usernameInput, 1, 0);
 
         // Where the password is actually entered
         PasswordField passwordInput = new PasswordField();
-        //GridPane.setConstraints(passwordInput, 1, 1);
 
         // Button declarations.
         // The login button.
@@ -143,12 +134,12 @@ public class Login extends Application{
         // the following displays the labels, buttons, and text fields declared above.
         gridPane.getChildren().addAll(usernameLabel, usernameInput, passwordLabel, passwordInput, loginButton, createaccountButton);
         Scene scene = new Scene(gridPane, 600, 400);
-        GridPane.setConstraints(usernameLabel, 2, 0); // Adjust column to 1
-        GridPane.setConstraints(usernameInput, 3, 0); // Adjust column to 2
-        GridPane.setConstraints(passwordLabel, 2, 1); // Adjust column to 1
-        GridPane.setConstraints(passwordInput, 3, 1); // Adjust column to 2
-        GridPane.setConstraints(loginButton, 3, 2); // Adjust column to 2
-        GridPane.setConstraints(createaccountButton, 3, 3); // Adjust column to 2
+        GridPane.setConstraints(usernameLabel, 2, 0);
+        GridPane.setConstraints(usernameInput, 3, 0); 
+        GridPane.setConstraints(passwordLabel, 2, 1); 
+        GridPane.setConstraints(passwordInput, 3, 1); 
+        GridPane.setConstraints(loginButton, 3, 2); 
+        GridPane.setConstraints(createaccountButton, 3, 3); 
 
         primaryStage.setScene(scene);
 
@@ -248,8 +239,6 @@ public class Login extends Application{
                 try {
                     phonenumber = Long.parseLong(phonenumberStr); //
                 } catch (NumberFormatException ex) {
-                    // phonenumberInput.getText() is not convertible to int
-                    // Handle the error here, such as showing a dialog box
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Invalid Phone Number");
                     alert.setHeaderText("Phone Number Format Error");
@@ -270,7 +259,6 @@ public class Login extends Application{
                 } else {
                     // Proceed to create the account
                     int insuranceID = Integer.parseInt(insuranceIDString);
-                    //int phonenumber = Integer.parseInt(phonenumberStr); // Convert String to int
                     char firstChar = firstname.charAt(0);
                     String username = Character.toUpperCase(firstChar) + lastname + phonenumber;
 

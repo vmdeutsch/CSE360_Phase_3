@@ -5,7 +5,6 @@ public class CurrentUser {
     private static String role;
     private static String currentPatient;
 
-    // Private constructor to prevent instantiation
     private CurrentUser() {}
 
     public static String getUsername() {
