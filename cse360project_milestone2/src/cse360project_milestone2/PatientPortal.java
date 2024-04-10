@@ -1,4 +1,4 @@
-package PatientPortal;
+package cse360project_milestone2;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -32,8 +32,7 @@ public class PatientPortal extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        patientId = "JDoe512241251";
-
+        patientId = CurrentUser.getUsername();;
         // Instantiate text fields
         nameField = new TextField();
         phoneField = new TextField();
@@ -228,7 +227,7 @@ public class PatientPortal extends Application {
     
     private void loadPatientData(String patientId) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(patientId + ".txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("src/cse360project_milestone2/accounts/patients/"+patientId + ".txt"));
             String line;
             String firstName = null;
             String lastName = null;
@@ -287,7 +286,7 @@ public class PatientPortal extends Application {
     
 	private InsuranceInfo loadInsuranceData(String patientId) {
 	    try {
-	        BufferedReader reader = new BufferedReader(new FileReader(patientId + ".txt"));
+	        BufferedReader reader = new BufferedReader(new FileReader("src/cse360project_milestone2/accounts/patients/"+patientId + ".txt"));
 	        String line;
 	        String provider = null;
 	        String policyNumber = null;
@@ -363,15 +362,37 @@ public class PatientPortal extends Application {
 	    return contentPane;
 	}
 
-	private Node showPrescriptionsSection(GridPane contentPane) {
+	// private Node showPrescriptionsSection(GridPane contentPane) {
+	//     // Clear the content pane before adding new elements
+	//     contentPane.getChildren().clear();
+
+	//     // Create labels and list view for prescriptions section
+	//     Label prescriptionsLabel = new Label("Prescriptions");
+	//     ListView<String> prescriptionsListView = new ListView<>();
+	//     // Add prescriptions to the list view (replace the example strings with actual prescription data)
+	//     prescriptionsListView.getItems().addAll("Prescription 1", "Prescription 2", "Prescription 3");
+
+	//     // Add elements to the content pane
+	//     contentPane.add(prescriptionsLabel, 0, 0);
+	//     contentPane.add(prescriptionsListView, 0, 1);
+
+	//     // Return the content pane as a Node
+	//     return contentPane;
+	// }
+
+    private Node showPrescriptionsSection(GridPane contentPane) {
 	    // Clear the content pane before adding new elements
 	    contentPane.getChildren().clear();
 
 	    // Create labels and list view for prescriptions section
 	    Label prescriptionsLabel = new Label("Prescriptions");
 	    ListView<String> prescriptionsListView = new ListView<>();
-	    // Add prescriptions to the list view (replace the example strings with actual prescription data)
-	    prescriptionsListView.getItems().addAll("Prescription 1", "Prescription 2", "Prescription 3");
+
+	    // Load prescriptions data from file
+	    List<String> prescriptions = loadPrescriptions(patientId);
+
+	    // Add prescriptions to the list view
+	    prescriptionsListView.getItems().addAll(prescriptions);
 
 	    // Add elements to the content pane
 	    contentPane.add(prescriptionsLabel, 0, 0);
@@ -381,15 +402,52 @@ public class PatientPortal extends Application {
 	    return contentPane;
 	}
 
-	private Node showMedicalHistorySection(GridPane contentPane) {
+	private List<String> loadPrescriptions(String patientId) {
+	    List<String> prescriptions = new ArrayList<>();
+	    String filename = "prescriptions/" + patientId + ".txt";
+	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            prescriptions.add(line);
+	        }
+	    } catch (IOException e) {
+	        // If the file doesn't exist, create a blank file
+	        createBlankFile(filename);
+	    }
+	    return prescriptions;
+	}
+
+	// private Node showMedicalHistorySection(GridPane contentPane) {
+	//     // Clear the content pane before adding new elements
+	//     contentPane.getChildren().clear();
+
+	//     // Create labels and text area for medical history section
+	//     Label medicalHistoryLabel = new Label("Medical History");
+	//     TextArea medicalHistoryTextArea = new TextArea();
+	//     // Add medical history details to the text area (replace the example text with actual medical history data)
+	//     medicalHistoryTextArea.setText("Medical history details...");
+
+	//     // Add elements to the content pane
+	//     contentPane.add(medicalHistoryLabel, 0, 0);
+	//     contentPane.add(medicalHistoryTextArea, 0, 1);
+
+	//     // Return the content pane as a Node
+	//     return contentPane;
+	// }
+
+    private Node showMedicalHistorySection(GridPane contentPane) {
 	    // Clear the content pane before adding new elements
 	    contentPane.getChildren().clear();
 
 	    // Create labels and text area for medical history section
 	    Label medicalHistoryLabel = new Label("Medical History");
 	    TextArea medicalHistoryTextArea = new TextArea();
-	    // Add medical history details to the text area (replace the example text with actual medical history data)
-	    medicalHistoryTextArea.setText("Medical history details...");
+
+	    // Load medical history data from file
+	    String medicalHistory = loadMedicalHistory(patientId);
+
+	    // Set medical history text in the text area
+	    medicalHistoryTextArea.setText(medicalHistory);
 
 	    // Add elements to the content pane
 	    contentPane.add(medicalHistoryLabel, 0, 0);
@@ -397,6 +455,21 @@ public class PatientPortal extends Application {
 
 	    // Return the content pane as a Node
 	    return contentPane;
+	}
+
+	private String loadMedicalHistory(String patientId) {
+	    String filename = "medicalhistory/" + patientId + ".txt";
+	    StringBuilder medicalHistory = new StringBuilder();
+	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            medicalHistory.append(line).append("\n"); // Append each line of medical history data
+	        }
+	    } catch (IOException e) {
+	        // If the file doesn't exist, create a blank file
+	        createBlankFile(filename);
+	    }
+	    return medicalHistory.toString();
 	}
 
     public static void main(String[] args) {
